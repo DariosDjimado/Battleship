@@ -1,2 +1,2 @@
 # Battleship
-Battlechip game
+Battleship game
