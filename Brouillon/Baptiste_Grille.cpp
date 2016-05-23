@@ -86,7 +86,7 @@ void Grille::placerBateaux()
 
 			// Demande à l'utilisateur l'orientation de son bateau
 			orientation = "";
-			cout << endl << "Comment voulez vous placer votre bateau n\260" << i + 1 << " ? (horizontal : h, vetical : v)" << endl;
+			cout << endl << "Comment voulez vous orienter votre bateau n\260" << i + 1 << " ? (horizontal : h, vetical : v)" << endl;
 			while (orientation != "h" && orientation != "v")
 			{
 				cin >> orientation;
