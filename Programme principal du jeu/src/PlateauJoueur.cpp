@@ -33,7 +33,7 @@ void Grille::afficher()
 		vector<int*>::iterator it_int;
 		for (it_int = (*it).begin(); it_int != (*it).end(); it_int++)
 		{
-			cout << *it_int << " "<<**it_int<<" ";
+			cout << *it_int << " " << (*(*it_int)) << " ";
 		}
 		cout << endl;
 	}
@@ -44,7 +44,7 @@ void Grille::setCaseValue(int x, int y, int *valeur)
 {
 	if (y < (int)(*tableau_).size() && x < (int)((*tableau_)[x]).size())
 	{
-		((*tableau_)[y])[x] = valeur;
+		*(((*tableau_)[y])[x] )= *valeur;
 	}
 }
 
