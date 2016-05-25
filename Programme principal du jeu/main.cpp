@@ -1,27 +1,21 @@
-#include "Grille.h"
+#include "Bateau.h"
 #include<iostream>
 
 using namespace std;
 
 void main()
 {
-	Bateau bateauTest;
-	bateauTest.afficher();
+	
 	Grille grille;
+	Bateau bateauTest(&grille);
 	cout << endl;
 	grille.afficher();
 	cout << endl;
-	grille.placerBateaux(bateauTest,true);
-	grille.afficher();
-	cout << endl;
-	int *val = new int;
-	*val = 8;
-	grille.setCaseValue(1, 0, val);
 	bateauTest.afficher();
 	cout << endl;
-	cout << *val << endl;
+	grille.setCaseValue(0, 3, 3);
 	grille.afficher();
 	cout << endl;
-	cout << grille.getCaseValue(0, 0) << grille.getCaseValue(1, 0) << grille.getCaseValue(0, 1) << endl;
+	bateauTest.afficher();
 	system("pause");	
 }

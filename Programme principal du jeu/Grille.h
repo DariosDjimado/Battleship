@@ -1,4 +1,5 @@
-#include "Bateau.h"
+//#include "Bateau.h"
+#include<vector>
 
 
 using namespace std;
@@ -16,9 +17,10 @@ class Grille
 public:
 	Grille(int coordX = 0, int coordY = 0, int nbLignes = 10, int nbColonnes = 10);
 	~Grille();
-	void setCaseValue(int x, int y, int *valeur);
+	void setCaseValue(int x, int y, int valeur);
 	int getCaseValue(int x, int y);
-	void placerBateaux(Bateau bateau, bool orientation);
+	int* getCaseAddr(int x, int y);
+	//void placerBateaux(Bateau bateau);
 	void afficher();
 
 };

@@ -41,11 +41,11 @@ void Grille::afficher()
 
 }
 
-void Grille::setCaseValue(int x, int y, int *valeur)
+void Grille::setCaseValue(int x, int y, int valeur)
 {
 	if (y < (int)tableau_->size() && x < (int)((*tableau_)[x]).size())
 	{
-		*(((*tableau_)[x])[y]) = *valeur;
+		*(((*tableau_)[x])[y]) = valeur;
 	}
 }
 
@@ -57,14 +57,30 @@ int Grille::getCaseValue(int x, int y)
 	}
 }
 
-void Grille::placerBateaux(Bateau bateau, bool orientation)
+int* Grille::getCaseAddr(int x, int y)
 {
-	if (orientation == true) // Horizontal : true
+	if (y < (int)(*tableau_).size() && x < (int)((*tableau_)[x]).size())
 	{
-		for (int i = 0; i < (bateau).getTaille(); i++)(*this).setCaseValue((bateau).getCoordX(), (bateau).getCoordY() + i, (bateau).getCaseValue(i));
+		return ((*tableau_)[x])[y];
+	}
+}
+
+/*void Grille::placerBateaux(Bateau bateau)
+{
+	if (bateau.getOrientation() == true) // Horizontal : true
+	{
+		for (int i = 0; i < (bateau).getTaille(); i++)
+		{
+			this->setCaseValue(bateau.getCoordX(), bateau.getCoordY() + i, 1);
+			bateau.setCaseDest(this->getCaseAddr(bateau.getCoordX(), bateau.getCoordY() + i), i);
+		}
 	}
 	else
 	{
-		for (int i = 0; i < (bateau).getTaille(); i++)(*this).setCaseValue((bateau).getCoordX() + i, (bateau).getCoordY(), (bateau).getCaseValue(i));
+		for (int i = 0; i < (bateau).getTaille(); i++)
+		{
+			this->setCaseValue(bateau.getCoordX() + i, bateau.getCoordY(), 1);
+			bateau.setCaseDest(this->getCaseAddr(bateau.getCoordX() + i, bateau.getCoordY()), i);
+		}
 	}
-}
+}*/
