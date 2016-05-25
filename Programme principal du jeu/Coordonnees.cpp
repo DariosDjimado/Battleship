@@ -9,6 +9,7 @@ Coordonnees::Coordonnees(int coordX, int coordY)
 	coordY_ = coordY;
 }
 
+// Methodes inutiles
 Coordonnees::~Coordonnees()
 {
 	cout << "Destruction des coordonnées" << endl;

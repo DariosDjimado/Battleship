@@ -1,5 +1,5 @@
 //#include "MainGame.h"
-#include"D:\Users\Baptiste\Documents\Telecom Saint-Etienne\FI 1\Semestre 6\Mini projet informatique\BatailleNavale\include\MainGame.h"
+#include"MainGame.h"
 
 Maingame::Maingame()
 {
