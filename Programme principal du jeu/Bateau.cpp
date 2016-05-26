@@ -2,29 +2,30 @@
 
 
 Bateau::Bateau(Grille * grille,int coordX, int coordY, int taille, bool orientation)
-	:Coordonnees(coordX,coordY)
 {
 	taille_ = taille;
 	orientation_ = orientation;
 	grille_ = grille;
+	coordX_ = coordX;
+	coordY_ = coordY;
 
 	// Place le bateau sur la grille :
 	if (orientation_ == true) // Horizontal : true
 	{
 		for (int i = 0; i < taille_; i++)
 		{
-			grille_->setCaseValue(getCoordX(), getCoordY() + i, 1);
-			bateau_.push_back(grille_->getCaseAddr(getCoordX(),getCoordY() + i));
+			if (grille_->getCaseValue(coordX_,coordY_+i)==0) grille_->setCaseValue(coordX_, coordY_ + i, 1);
+			bateau_.push_back(grille_->getCaseAddr(coordX_, coordY_ + i));
 		}
 	}
-	/*else
+	else
 	{
-		for (int i = 0; i < (bateau).getTaille(); i++)
+		for (int i = 0; i < taille_; i++)
 		{
-			this->setCaseValue(bateau.getCoordX() + i, bateau.getCoordY(), 1);
-			bateau.setCaseDest(this->getCaseAddr(bateau.getCoordX() + i, bateau.getCoordY()), i);
+			if (grille_->getCaseValue(coordX_+i, coordY_) == 0)grille_->setCaseValue(coordX_ + i, coordY_, 1);
+			bateau_.push_back(grille_->getCaseAddr(coordX_ + i, coordY_));
 		}
-	}*/
+	}
 
 }
 
@@ -60,3 +61,14 @@ void Bateau::afficher()
 	//bateau_.push_back(caseBateau);
 	bateau_[numeroCase] = caseBateau;
 }*/
+
+int Bateau::etat()
+{
+	int casesTouchees = 0;
+	for (int i = 0; i < taille_; i++)
+	{
+		if (getCaseValue(i) == -1)casesTouchees++;
+	}
+	if (casesTouchees == taille_)return -1;
+	return casesTouchees;
+}

@@ -1,5 +1,6 @@
 #include <iostream>
 #include "CImg.h"
+#include "Bateau.h"
 
 using namespace std;
 using namespace cimg_library;
@@ -45,6 +46,22 @@ for (int i = 0; i < 10; i++)
 }
 
 
+Grille grille;
+Bateau bateauJoueur_1(&grille,0,0,4);
+Bateau bateauJoueur_2(&grille,2,2,4);
+Bateau bateauJoueur_3(&grille,1,4);
+Bateau bateauJoueur_4(&grille,5,5,4,false);
+Bateau bateauJoueur_5(&grille,2,0,4,false);
+Bateau bateauJoueur_6(&grille,5,9,4,false);
+grille.afficher();
+for (int i = 0; i < 10; i++)
+{
+	for (int j = 0; j < 10; j++)
+	{
+		if (grille.getCaseValue(i,j)==1)scene.draw_circle(j * 50 + 25, (i+2) * 50 + 25, 25, play1_color, 1, ~0U);
+	}
+}
+
 // Main loop, exit if the display window is closed or if ESC or Q key is hit
   while (!disp.is_closed() && !disp.is_keyESC() && !disp.is_keyQ()) {
     
@@ -58,13 +75,16 @@ for (int i = 0; i < 10; i++)
       
 	  cout << "i  " << i << endl;
 	  cout << "j  " << j << endl;
+	  if (grille.tirer(i - 2, j))
+	  {
+		  scene.draw_line(j * 50, i * 50, j * 50 + 50, i * 50 + 50, play1_color);
+		  scene.draw_line(j * 50 + 50, i * 50, j * 50, i * 50 + 50, play1_color);
+	  }
+	  
 
-	  scene.draw_line(j * 50, i*50,  j*50+50, i*50+50,play1_color);
-	  scene.draw_line(j * 50+50, i * 50, j * 50, i * 50 + 50, play1_color);
-
-	  scene.draw_circle(j*50+25, i*50+25, 25, play1_color, 1, ~0U);
+	  //scene.draw_circle(j*50+25, i*50+25, 25, play1_color, 1, ~0U);
     }
-    disp.wait(2);
+    disp.wait();
     
     // Handle window resize
     if (disp.is_resized()) disp.resize();

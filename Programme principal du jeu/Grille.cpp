@@ -49,7 +49,7 @@ void Grille::setCaseValue(int x, int y, int valeur)
 
 int Grille::getCaseValue(int x, int y)
 {
-	if (y < (int)(*tableau_).size() && x < (int)((*tableau_)[x]).size())
+	if (y < nbLignes_ && x < nbLignes_)
 	{
 		return *((*tableau_)[x])[y];
 	}
@@ -63,7 +63,7 @@ int* Grille::getCaseAddr(int x, int y)
 	}
 }
 
-bool Grille::placerBateaux(int x, int y, bool orientation)
+bool Grille::verifierEmpl(int x, int y, bool orientation)
 {
 	if (nbTableaux_ != 6)
 	{
@@ -71,7 +71,7 @@ bool Grille::placerBateaux(int x, int y, bool orientation)
 		if (orientation == true) //horizontal
 			if (y + 4 < 10)
 			{
-				for (int i = 0; i < 4; i++) if (getCaseValue(x, y + i) != 0) possible = false;
+				for (int i = 0; i < 4; i++) if (getCaseValue(x, y + i) != 0) { possible = false; break; }
 				return possible;
 			}
 			else
@@ -81,11 +81,25 @@ bool Grille::placerBateaux(int x, int y, bool orientation)
 			{
 				for (int i = 0; i < 4; i++)
 				{
-					if (getCaseValue(x + i, y) != 0) possible = false;
+					if (getCaseValue(x + i, y) != 0) {
+						possible = false; break;
+					}
 				}
 				return possible;
 			}
 			else
 				return false;
+	}
+}
+
+bool Grille::tirer(int x, int y)
+{
+	int caseValue = getCaseValue(x, y);
+	if (caseValue != 1 && caseValue != 0)return false;
+	else
+	{
+		if (caseValue == 0)setCaseValue(x, y, -2);
+		else setCaseValue(x, y, -1);
+		return true;
 	}
 }

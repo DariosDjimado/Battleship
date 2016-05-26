@@ -21,8 +21,8 @@ public:
 	void setCaseValue(int x, int y, int valeur);
 	int getCaseValue(int x, int y);
 	int* getCaseAddr(int x, int y);
-	bool placerBateaux(int x,int y,bool orientation);
+	bool verifierEmpl(int x,int y,bool orientation);
 	void setNbTableaux(int nb) { nbTableaux_ = nb; }
 	void afficher();
-
+	bool tirer(int x,int y);
 };

@@ -1,14 +1,14 @@
 #include <iostream>
-#include "Coordonnees.h"
 #include"Grille.h"
 
 using namespace std;
 
 
 
-class Bateau:public Coordonnees
+class Bateau
 	
 {
+	int coordX_, coordY_;
 	Grille * grille_;
 	vector<int *> bateau_;
 	int taille_;
@@ -20,4 +20,7 @@ public:
 	int getTaille() { return taille_; }
 	bool getOrientation() { return orientation_; }
 	void afficher();
+	int getCoordX() { return coordX_; }
+	int getCoordY() { return coordY_; }
+	int etat(); // -1 : coulé ; 0 : non touché ; >0 : nombre de cases touchées
 };
