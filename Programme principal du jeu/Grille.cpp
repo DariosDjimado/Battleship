@@ -7,13 +7,11 @@ Grille::Grille(int coordX, int coordY, int nbLignes, int nbColonnes)
 	coordY_ = coordY;
 	nbColonnes_ = nbColonnes;
 	nbLignes_ = nbLignes;
-	//for (int i = 0; i < nbColonnes_*nbLignes_; i++)tabInit_[i] = 0;
 	tabInit_.resize(nbColonnes_*nbLignes_, 0);
 
 	tableau_->resize(nbColonnes_);
 	for (int i = 0; i < nbColonnes_; i++)
 	{
-		//((*tableau_)[i]).resize(nbLignes_);
 		for (int j = 10 * i; j < 10 * i + nbLignes_; j++)
 			((*tableau_)[i]).push_back(&tabInit_[j]);
 
@@ -65,22 +63,29 @@ int* Grille::getCaseAddr(int x, int y)
 	}
 }
 
-/*void Grille::placerBateaux(Bateau bateau)
+bool Grille::placerBateaux(int x, int y, bool orientation)
 {
-	if (bateau.getOrientation() == true) // Horizontal : true
+	if (nbTableaux_ != 6)
 	{
-		for (int i = 0; i < (bateau).getTaille(); i++)
-		{
-			this->setCaseValue(bateau.getCoordX(), bateau.getCoordY() + i, 1);
-			bateau.setCaseDest(this->getCaseAddr(bateau.getCoordX(), bateau.getCoordY() + i), i);
-		}
+		bool possible = true;
+		if (orientation == true) //horizontal
+			if (y + 4 < 10)
+			{
+				for (int i = 0; i < 4; i++) if (getCaseValue(x, y + i) != 0) possible = false;
+				return possible;
+			}
+			else
+				return false;
+		else //vertical
+			if (x + 4 < 10)
+			{
+				for (int i = 0; i < 4; i++)
+				{
+					if (getCaseValue(x + i, y) != 0) possible = false;
+				}
+				return possible;
+			}
+			else
+				return false;
 	}
-	else
-	{
-		for (int i = 0; i < (bateau).getTaille(); i++)
-		{
-			this->setCaseValue(bateau.getCoordX() + i, bateau.getCoordY(), 1);
-			bateau.setCaseDest(this->getCaseAddr(bateau.getCoordX() + i, bateau.getCoordY()), i);
-		}
-	}
-}*/
+}

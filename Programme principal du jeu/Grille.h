@@ -10,8 +10,9 @@ class Grille
 	int coordY_;
 	int nbColonnes_;
 	int nbLignes_;
-	vector<int> tabInit_;
+	int nbTableaux_;
 
+	vector<int> tabInit_;
 	vector<vector <int*>> *tableau_ = new vector<vector<int*>>;
 
 public:
@@ -20,7 +21,8 @@ public:
 	void setCaseValue(int x, int y, int valeur);
 	int getCaseValue(int x, int y);
 	int* getCaseAddr(int x, int y);
-	//void placerBateaux(Bateau bateau);
+	bool placerBateaux(int x,int y,bool orientation);
+	void setNbTableaux(int nb) { nbTableaux_ = nb; }
 	void afficher();
 
 };
