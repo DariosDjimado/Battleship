@@ -1,6 +1,7 @@
 #include <iostream>
 #include "CImg.h"
-#include "Bateau.h"
+#include "Maingame.h"
+#include <fstream>
 
 using namespace std;
 using namespace cimg_library;
@@ -45,6 +46,7 @@ for (int i = 0; i < 10; i++)
 	}
 }
 
+Maingame maingame;
 
 Grille grille;
 Bateau bateauJoueur_1(&grille,0,0,4);
@@ -54,6 +56,34 @@ Bateau bateauJoueur_4(&grille,5,5,4,false);
 Bateau bateauJoueur_5(&grille,2,0,4,false);
 Bateau bateauJoueur_6(&grille,5,9,4,false);
 grille.afficher();
+
+
+
+
+maingame.setBateauJoueur(0, 0, 4);
+maingame.setBateauJoueur(2, 2, 4);
+maingame.setBateauJoueur(1, 4, 4);
+maingame.setBateauJoueur(5, 5, 4, false);
+maingame.setBateauJoueur(2, 0, 4, false);
+maingame.setBateauJoueur(5, 9, 4, false);
+maingame.setBateauIa(0, 0, 4);
+maingame.setBateauIa(2, 2, 4);
+maingame.setBateauIa(1, 4, 4);
+maingame.setBateauIa(5, 5, 4, false);
+maingame.setBateauIa(2, 0, 4, false);
+maingame.setBateauIa(5, 9, 4, false);
+
+ofstream os("testSave.txt");
+maingame.save(os);
+os.close();
+ifstream is("testSave.txt");
+maingame.load(is);
+is.close();
+
+cout << endl;
+maingame.getGrilleJoueur()->afficher();
+
+
 for (int i = 0; i < 10; i++)
 {
 	for (int j = 0; j < 10; j++)

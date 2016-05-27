@@ -25,4 +25,9 @@ public:
 	void setNbTableaux(int nb) { nbTableaux_ = nb; }
 	void afficher();
 	bool tirer(int x,int y);
+	//
+	int getTaille() const{ return nbColonnes_*nbLignes_; }
+
+	int getTabInit(int i) const { return tabInit_[i]; }
+	void setTabInit(int i, int valeur) { tabInit_[i] = valeur; }
 };
