@@ -69,7 +69,7 @@ bool Grille::verifierEmpl(int x, int y, bool orientation)
 	{
 		bool possible = true;
 		if (orientation == true) //horizontal
-			if (y + 4 < 10)
+			if (y + 3 < 10)
 			{
 				for (int i = 0; i < 4; i++) if (getCaseValue(x, y + i) != 0) { possible = false; break; }
 				return possible;
@@ -77,7 +77,7 @@ bool Grille::verifierEmpl(int x, int y, bool orientation)
 			else
 				return false;
 		else //vertical
-			if (x + 4 < 10)
+			if (x + 3 < 10)
 			{
 				for (int i = 0; i < 4; i++)
 				{
@@ -92,14 +92,22 @@ bool Grille::verifierEmpl(int x, int y, bool orientation)
 	}
 }
 
-bool Grille::tirer(int x, int y)
+int Grille::tirer(int x, int y)
 {
 	int caseValue = getCaseValue(x, y);
-	if (caseValue != 1 && caseValue != 0)return false;
+	if (caseValue != 1 && caseValue != 0) return 0;
 	else
 	{
-		if (caseValue == 0)setCaseValue(x, y, -2);
-		else setCaseValue(x, y, -1);
-		return true;
+		if (caseValue == 0)
+		{
+			setCaseValue(x, y, -2);
+				return -2;
+		}
+		else
+		{
+			setCaseValue(x, y, -1);
+			return -1;
+		}
+		
 	}
 }

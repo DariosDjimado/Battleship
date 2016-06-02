@@ -24,7 +24,7 @@ public:
 	bool verifierEmpl(int x,int y,bool orientation);
 	void setNbTableaux(int nb) { nbTableaux_ = nb; }
 	void afficher();
-	bool tirer(int x,int y);
+	int tirer(int x,int y);
 	//
 	int getTaille() const{ return nbColonnes_*nbLignes_; }
 
