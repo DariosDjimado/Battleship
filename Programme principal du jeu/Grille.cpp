@@ -1,10 +1,8 @@
 #include <iostream>
 #include "Grille.h"
 
-Grille::Grille(int coordX, int coordY, int nbLignes, int nbColonnes)
+Grille::Grille(int nbLignes, int nbColonnes)
 {
-	coordX_ = coordX;
-	coordY_ = coordY;
 	nbColonnes_ = nbColonnes;
 	nbLignes_ = nbLignes;
 	tabInit_.resize(nbColonnes_*nbLignes_, 0);
@@ -101,7 +99,7 @@ int Grille::tirer(int x, int y)
 		if (caseValue == 0)
 		{
 			setCaseValue(x, y, -2);
-				return -2;
+			return -2;
 		}
 		else
 		{
@@ -109,5 +107,21 @@ int Grille::tirer(int x, int y)
 			return -1;
 		}
 		
+	}
+}
+
+void Grille::operator=(const Grille &g)
+{
+	tableau_->erase(tableau_->begin(),tableau_->end());
+	nbColonnes_ = g.nbColonnes_;
+	nbLignes_ = g.nbLignes_;
+	nbTableaux_ = g.nbTableaux_;
+	tabInit_ = vector<int>(100,0);
+	tableau_->resize(nbColonnes_);
+	for (int i = 0; i < nbColonnes_; i++)
+	{
+		for (int j = 10 * i; j < 10 * i + nbLignes_; j++)
+			((*tableau_)[i]).push_back(&tabInit_[j]);
+
 	}
 }

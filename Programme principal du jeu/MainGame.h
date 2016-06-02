@@ -28,7 +28,7 @@ private:
 	int gagnerJoueur_; // indique combien de bateaux le jouer a détruit
 	int gagnerIa_;		// indique combien de bateaux l'Ia a détruit
 
-
+	
 	bool tour_;
 
 public:
@@ -46,6 +46,7 @@ public:
 	Grille * getGrilleJoueur() { return &grilleJoueur_; }
 	Grille * getGrilleIa() { return &grilleIa_; }
 	void opsin();
+	void clearDisp();
 
 	void drawShip(int i, int j);
 };

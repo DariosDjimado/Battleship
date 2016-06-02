@@ -178,7 +178,7 @@ void Maingame::opsin()
 
 		scene_.display(disp_);
 
-		bool orientation;
+
 
 		if (disp_.button() & 1) {
 			int i = 12 * disp_.mouse_y() / disp_.height();
@@ -187,19 +187,60 @@ void Maingame::opsin()
 			{
 				if (i == 0)
 				{
-					if(j>5)
+					if(j>5) //NouvellePartie
 					{
-						//Reprendre
+						clearDisp();
+						bateauxJoueur_.clear();
+						bateauxIa_.clear();
+						grilleJoueur_ = Grille();
+						grilleIa_ = Grille();
+						cout << endl;
+						grilleIa_.afficher();
+						cout << endl;
+						grilleJoueur_.afficher();
+						cout << endl;
 					}
-					if (j > 3)
+					if (j == 4 || j == 5) //Charger
 					{
-						//Charger
+						ifstream ifs("sauvegarde.txt");
+						load(ifs);
+						clearDisp();
+						int tailleGrille = grilleIa_.getTaille();
+						for (int k = 0; k < tailleGrille; k++)
+						{
+							// Dessine sur la grille joueur
+							int caseValue = grilleJoueur_.getCaseValue(k / 10, k % 10);
+							int j = k % 10;
+							int i = k / 10 + 2;
+							if (caseValue ==-2|| caseValue ==-1)
+							{
+								scene_.draw_line(j * 50, i * 50, j * 50 + 50, i * 50 + 50, play2_color_);
+								scene_.draw_line(j * 50 + 50, i * 50, j * 50, i * 50 + 50, play2_color_);
+								if (caseValue == -1)scene_.draw_circle(j * 50 + 25, i * 50 + 25, 25, play2_color_, 1, ~0U);
+							}
+							if (caseValue == 1)
+							{
+								scene_.draw_circle(j * 50 + 25, i * 50 + 25, 25, play2_color_, 1, ~0U);
+							}
+
+							// Dessine sur la grille Ia
+							caseValue = grilleIa_.getCaseValue(k / 10, k % 10);
+							j = k % 10 + 11;
+							if (caseValue == -2 || caseValue == -1)
+							{
+								scene_.draw_line(j * 50, i * 50, j * 50 + 50, i * 50 + 50, play2_color_);
+								scene_.draw_line(j * 50 + 50, i * 50, j * 50, i * 50 + 50, play2_color_);
+								if (caseValue == -1)scene_.draw_circle(j * 50 + 25, i * 50 + 25, 25, play2_color_, 1, ~0U);
+							}
+						}
+
 					}
-					if (j > 1)
+					if (j == 2 || j == 3) //Sauvegarder
 					{
-						//Sauvegarder
+						ofstream ofs("sauvegarde.txt");
+						save(ofs);
 					}
-					else
+					if (j < 2) // Jouer
 					{
 						while (bateauxJoueur_.size() < 6)
 						{
@@ -221,7 +262,8 @@ void Maingame::opsin()
 							cout << endl << endl;
 							cout << "x : " << x << " y: " << y;
 							cout << endl << endl;
-							ori = (bool)rand() % 2;
+							if (rand() % 2 == 1)ori = true;
+							else ori = false;
 							cout << "orientation " << ori;
 							cout << endl << endl;
 							if (grilleIa_.verifierEmpl(x,y,ori))bateauxIa_.push_back(Bateau(&grilleIa_, x, y, 4, ori));
@@ -239,8 +281,8 @@ void Maingame::opsin()
 					{
 						if (tour_ && bateauxJoueur_.size()==6) 
 						{
-							
-							if (grilleIa_.tirer(i-2, j-11)==-1)
+							int tirer = grilleIa_.tirer(i - 2, j - 11);
+							if (tirer==-1)
 							{
 								
 								scene_.draw_circle(j * 50 + 25, i * 50 + 25, 25, play2_color_, 1, ~0U);
@@ -248,7 +290,7 @@ void Maingame::opsin()
 								scene_.draw_line(j * 50 + 50, i * 50, j * 50, i * 50 + 50, play2_color_);
 								tour_ = false;
 							}
-							else
+							if (tirer == -2)
 							{
 								scene_.draw_line(j * 50, i * 50, j * 50 + 50, i * 50 + 50, play2_color_);
 								scene_.draw_line(j * 50 + 50, i * 50, j * 50, i * 50 + 50, play2_color_);
@@ -265,19 +307,21 @@ void Maingame::opsin()
 								int x, y;
 								x = 0;
 								y = 0;
+								int tirer = 0;
 								do
 								{
-									x = rand() % 12+2;
+									x = rand() % 10+2;
 									y = rand() % 10;
-									cout << x << " " << y << endl;
-									if (grilleJoueur_.tirer(x-2, y) != 0)
+									tirer = grilleJoueur_.tirer(x - 2, y);
+									cout << x-2 << " " << y << endl;
+									if (tirer != 0)
 									{
 										scene_.draw_line(y * 50, x * 50, y * 50 + 50, x * 50 + 50, play2_color_);
 										scene_.draw_line(y * 50 + 50, x * 50, y * 50, x * 50 + 50, play2_color_);
 										tour_ = true;
 										cout << "je suis venu ici" << endl;
 									}
-								} while (grilleJoueur_.tirer(x, y) == 0 && tour_==false);
+								} while (tirer == 0 && tour_==false);
 							}
 
 						}
@@ -294,7 +338,8 @@ void Maingame::opsin()
 
 void Maingame::drawShip(int i,int j)
 {
-	while (!disp_.is_keyH() && !disp_.is_keyV());
+	while (!disp_.is_keyH() && !disp_.is_keyV() /*&& !(disp_.button() & 1)*/);
+	//if (disp_.button() & 1)return;
 	if (disp_.is_keyH())
 	{
 		if (grilleJoueur_.verifierEmpl(i - 2, j, true))
@@ -314,4 +359,20 @@ void Maingame::drawShip(int i,int j)
 	
 
 	grilleJoueur_.afficher();
+}
+
+void Maingame::clearDisp()
+{
+	CImg <unsigned char> grid(1050, 600, 1, 3, 255);
+	for (int i = 0; i < 2; i++) grid.draw_line(0, 50 * i, 400, 50 * i, grid_color_);
+	for (int i = 1; i < 5; i++) grid.draw_line(100 * i, 0, 100 * i, 50, grid_color_);
+	for (int i = 2; i < 13; i++) grid.draw_line(0, 50 * i, 500, 50 * i, grid_color_);
+	for (int i = 2; i < 13; i++) grid.draw_line(550, 50 * i, 1050, 50 * i, grid_color_);
+	for (int j = 1; j < 21; j++) grid.draw_line(50 * j, 100, 50 * j, 600, grid_color_);
+
+	CImgDisplay disp(grid, "Bataille Navale", 0, false, false);
+	disp_ = disp;
+	scene_ = grid;
+	disp_.move((CImgDisplay::screen_width() - disp.width()) / 2,
+		(CImgDisplay::screen_height() - disp.height()) / 2);
 }
