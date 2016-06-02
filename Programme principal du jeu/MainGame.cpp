@@ -14,6 +14,10 @@ Maingame::Maingame()
 	play2_color_ = play2_color;
 
 	CImg <unsigned char> grid(1050, 600, 1, 3, 255);
+	grid.draw_text(19, 14, "JOUER", play1_color, 0, 1, 25);
+	grid.draw_text(110, 14, "SAUVER", play1_color, 0, 1, 25);
+	grid.draw_text(203, 14, "CHARGER", play1_color, 0, 1, 25);
+	grid.draw_text(309, 14, "REJOUER", play1_color, 0, 1, 25);
 	for (int i = 0; i < 2; i++) grid.draw_line(0, 50 * i, 400, 50 * i, grid_color);
 	for (int i = 1; i < 5; i++) grid.draw_line(100 * i, 0, 100 * i, 50, grid_color);
 	for (int i = 2; i < 13; i++) grid.draw_line(0, 50 * i, 500, 50 * i, grid_color);
@@ -37,6 +41,8 @@ int Maingame::isWin()
 	else
 		if (gagnerJoueur_ == 6)
 			return 0;
+		else
+			return (-1);
 }
 
 void Maingame::save(ofstream &ofs)
@@ -178,8 +184,6 @@ void Maingame::opsin()
 
 		scene_.display(disp_);
 
-
-
 		if (disp_.button() & 1) {
 			int i = 12 * disp_.mouse_y() / disp_.height();
 			int j = 21 * disp_.mouse_x() / disp_.width();
@@ -187,20 +191,32 @@ void Maingame::opsin()
 			{
 				if (i == 0)
 				{
-					if(j>5) //NouvellePartie
+
+					//Rejouer
+
+
+					if(j>5)
 					{
 						clearDisp();
 						bateauxJoueur_.clear();
 						bateauxIa_.clear();
 						grilleJoueur_ = Grille();
 						grilleIa_ = Grille();
+						gagnerIa_ = 0;
+						gagnerJoueur_ = 0;
+						tour_ = true;
 						cout << endl;
 						grilleIa_.afficher();
 						cout << endl;
 						grilleJoueur_.afficher();
 						cout << endl;
 					}
-					if (j == 4 || j == 5) //Charger
+
+
+					//Charger
+
+
+					if (j == 4 || j == 5)
 					{
 						ifstream ifs("sauvegarde.txt");
 						load(ifs);
@@ -235,14 +251,26 @@ void Maingame::opsin()
 						}
 
 					}
-					if (j == 2 || j == 3) //Sauvegarder
+
+
+					//Sauvegarder
+
+
+					if (j == 2 || j == 3) 
 					{
 						ofstream ofs("sauvegarde.txt");
 						save(ofs);
 					}
-					if (j < 2) // Jouer
+
+					// *********************************************************************************************************************
+					// ************************************************* Jouer *************************************************************
+					// *********************************************************************************************************************
+
+					if (j < 2)
 					{
-						while (bateauxJoueur_.size() < 6)
+						scene_.draw_text(509, 14, "Placez vos bateaux", play1_color_, 0, 1, 25);
+						scene_.draw_text(489, 50, "H : Horizontal   V : Vertical", play1_color_, 0, 1, 25);
+						while (bateauxJoueur_.size() < 6) // Le joueur place ses bateaux
 						{
 							if (disp_.button() & 1) {
 								int i = 12 * disp_.mouse_y() / disp_.height();
@@ -251,8 +279,11 @@ void Maingame::opsin()
 							}
 							scene_.display(disp_);
 						}
+						unsigned char white[3] = { 255,255,255 };
+						scene_.draw_text(509, 14, "Placez vos bateaux", white, 0, 1, 25);
+						scene_.draw_text(489, 50, "H : Horizontal   V : Vertical", white, 0, 1, 25);
 						srand(time(NULL));
-						while (bateauxIa_.size() < 6)
+						while (bateauxIa_.size() < 6) // L'Ia place ses bateaux
 						{
 							
 							int x, y;
@@ -279,18 +310,25 @@ void Maingame::opsin()
 				{
 					if (i > 1 && j > 10)
 					{
-						if (tour_ && bateauxJoueur_.size()==6) 
+						if (tour_ && bateauxJoueur_.size()==6 && isWin()==-1) // Le joueur joue
 						{
 							int tirer = grilleIa_.tirer(i - 2, j - 11);
-							if (tirer==-1)
+							if (tirer==-1) // Bateau touché
 							{
 								
 								scene_.draw_circle(j * 50 + 25, i * 50 + 25, 25, play2_color_, 1, ~0U);
 								scene_.draw_line(j * 50, i * 50, j * 50 + 50, i * 50 + 50, play2_color_);
 								scene_.draw_line(j * 50 + 50, i * 50, j * 50, i * 50 + 50, play2_color_);
 								tour_ = false;
+								// On regarde le nombre de bateaux de l'Ia coulés
+								int nbrBateauxCoulés = 0;
+								for (int k = 0; k < 6; k++)
+								{
+									if (bateauxIa_[k].etat() == -1)nbrBateauxCoulés++;
+								}
+								gagnerJoueur_ = nbrBateauxCoulés;
 							}
-							if (tirer == -2)
+							if (tirer == -2) // Tir dans la mer
 							{
 								scene_.draw_line(j * 50, i * 50, j * 50 + 50, i * 50 + 50, play2_color_);
 								scene_.draw_line(j * 50 + 50, i * 50, j * 50, i * 50 + 50, play2_color_);
@@ -302,7 +340,7 @@ void Maingame::opsin()
 							grilleIa_.afficher();
 							cout << endl << endl;
 							srand(time(NULL));
-							if (!tour_)
+							if (!tour_ && isWin()==-1) // L'Ia joue
 							{
 								int x, y;
 								x = 0;
@@ -320,10 +358,20 @@ void Maingame::opsin()
 										scene_.draw_line(y * 50 + 50, x * 50, y * 50, x * 50 + 50, play2_color_);
 										tour_ = true;
 										cout << "je suis venu ici" << endl;
+										if (tirer == -1)
+										{
+											int nbrBateauxCoulés = 0;
+											for (int k = 0; k < 6; k++)
+											{
+												if (bateauxJoueur_[k].etat() == -1)nbrBateauxCoulés++;
+											}
+											gagnerIa_ = nbrBateauxCoulés;
+										}
 									}
 								} while (tirer == 0 && tour_==false);
 							}
-
+							if(isWin()==1)scene_.draw_text(489, 50, "L'Ia a gagné", play1_color_, 0, 1, 25);
+							if(isWin()==0)scene_.draw_text(489, 50, "Vous avez gagné !", play1_color_, 0, 1, 25);
 						}
 					}
 				}
@@ -364,6 +412,10 @@ void Maingame::drawShip(int i,int j)
 void Maingame::clearDisp()
 {
 	CImg <unsigned char> grid(1050, 600, 1, 3, 255);
+	grid.draw_text(19, 14, "JOUER", play1_color_, 0, 1, 25);
+	grid.draw_text(110, 14, "SAUVER", play1_color_, 0, 1, 25);
+	grid.draw_text(203, 14, "CHARGER", play1_color_, 0, 1, 25);
+	grid.draw_text(309, 14, "REJOUER", play1_color_, 0, 1, 25);
 	for (int i = 0; i < 2; i++) grid.draw_line(0, 50 * i, 400, 50 * i, grid_color_);
 	for (int i = 1; i < 5; i++) grid.draw_line(100 * i, 0, 100 * i, 50, grid_color_);
 	for (int i = 2; i < 13; i++) grid.draw_line(0, 50 * i, 500, 50 * i, grid_color_);
