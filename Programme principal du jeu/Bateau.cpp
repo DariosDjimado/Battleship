@@ -1,3 +1,5 @@
+// Auteurs : DJIMADO , WOLFF
+
 #include "Bateau.h"
 
 
@@ -34,33 +36,10 @@ Bateau::~Bateau()
 	bateau_.clear();
 }
 
-/*bool Bateau::coule()
-{
-bool coule = true;
-for (int i = 0; i < 4; i++)
-{
-if ((*this).getCaseValue(0, i) != 1)
-{
-coule = false;
-break;
-}
-}
-return coule;
-}*/
-
-
 void Bateau::afficher()
 {
-	//vector<int>::iterator it;
-	//for (it = bateau_.begin(); it != bateau_.end(); it++)cout << *it << " ";
 	for (int i = 0; i < taille_; i++)cout << bateau_[i] << " " << *bateau_[i] << " ";
 }
-
-/*void  Bateau::setCaseDest(int* caseBateau,int numeroCase)
-{
-	//bateau_.push_back(caseBateau);
-	bateau_[numeroCase] = caseBateau;
-}*/
 
 int Bateau::etat()
 {

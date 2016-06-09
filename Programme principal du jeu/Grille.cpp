@@ -1,3 +1,5 @@
+// Auteurs : DJIMADO , WOLFF
+
 #include <iostream>
 #include "Grille.h"
 
@@ -63,8 +65,6 @@ int* Grille::getCaseAddr(int x, int y)
 
 bool Grille::verifierEmpl(int x, int y, bool orientation)
 {
-	if (nbTableaux_ != 6)
-	{
 		bool possible = true;
 		if (orientation == true) //horizontal
 			if (y + 3 < 10)
@@ -87,7 +87,6 @@ bool Grille::verifierEmpl(int x, int y, bool orientation)
 			}
 			else
 				return false;
-	}
 }
 
 int Grille::tirer(int x, int y)
@@ -115,7 +114,7 @@ void Grille::operator=(const Grille &g)
 	tableau_->erase(tableau_->begin(),tableau_->end());
 	nbColonnes_ = g.nbColonnes_;
 	nbLignes_ = g.nbLignes_;
-	nbTableaux_ = g.nbTableaux_;
+	//nbTableaux_ = g.nbTableaux_;
 	tabInit_ = vector<int>(100,0);
 	tableau_->resize(nbColonnes_);
 	for (int i = 0; i < nbColonnes_; i++)

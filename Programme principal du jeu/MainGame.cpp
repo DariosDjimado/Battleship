@@ -1,3 +1,5 @@
+// Auteurs : DJIMADO , WOLFF
+
 #include"MainGame.h"
 
 
@@ -32,6 +34,14 @@ Maingame::Maingame()
 
 	scene_ = grid;
 
+}
+
+Maingame::~Maingame()
+{
+	//delete [] grid_color_;
+	//delete [] play1_color_;
+    bateauxJoueur_.clear();
+	bateauxIa_.clear();
 }
 
 int Maingame::isWin()
@@ -178,7 +188,7 @@ void Maingame::setBateauIa(int coordX, int coordY, int taille, bool orientation)
 	bateauxIa_.push_back(Bateau(&grilleIa_, coordX, coordY, taille, orientation));
 }
 
-void Maingame::opsin()
+void Maingame::start()
 {
 	while (!disp_.is_closed() && !disp_.is_keyESC() && !disp_.is_keyQ()) {
 
@@ -386,8 +396,8 @@ void Maingame::opsin()
 
 void Maingame::drawShip(int i,int j)
 {
-	while (!disp_.is_keyH() && !disp_.is_keyV() /*&& !(disp_.button() & 1)*/);
-	//if (disp_.button() & 1)return;
+	while (!disp_.is_keyH() && !disp_.is_keyV());
+
 	if (disp_.is_keyH())
 	{
 		if (grilleJoueur_.verifierEmpl(i - 2, j, true))
