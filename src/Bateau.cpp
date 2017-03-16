@@ -1,6 +1,6 @@
 // Auteurs : DJIMADO , WOLFF
 
-#include "Bateau.h"
+#include "../header/Bateau.h"
 
 
 Bateau::Bateau(Grille * grille,int coordX, int coordY, int taille, bool orientation)

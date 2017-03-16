@@ -1,7 +1,7 @@
 // Auteurs : DJIMADO , WOLFF
 
 #include <iostream>
-#include "Grille.h"
+#include "../header/Grille.h"
 
 Grille::Grille(int nbLignes, int nbColonnes)
 {

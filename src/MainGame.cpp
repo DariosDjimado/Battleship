@@ -1,6 +1,6 @@
 // Auteurs : DJIMADO , WOLFF
 
-#include"MainGame.h"
+#include"../header/MainGame.h"
 
 
 Maingame::Maingame()
