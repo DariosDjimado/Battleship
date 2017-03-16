@@ -1,0 +1,10 @@
+#visual studio
+.vs
+
+/Debug
+
+*.sln
+*.VC.opendb
+*.vcxproj
+*.vcxproj.filters
+*.sdf
